@@ -55,16 +55,16 @@ namespace CSV.Mongo.JSON.Converter
                     stopwatch.Stop();
 
                     var fileInfo = new FileInfo(fileNameJson);
-                    var sizeKB = fileInfo.Length / 1024;
+                    var sizeKB = fileInfo.Length / 1024.0;
                     bool showMB = sizeKB > 1024;
-                    var sizeMB = sizeKB / 1024;
+                    var sizeMB = sizeKB / 1024.0;
 
-                    string display = $"{sizeKB} KB";
+                    string display = $"{sizeKB.ToString("0.00")} KB";
                     if (showMB)
                     {
-                        display = $"{sizeMB} MB";
+                        display = $"{sizeMB.ToString("0.00")} MB";
                     }
-                    Console.WriteLine($"Complete ({stopwatch.Elapsed.TotalSeconds} s): {fileNameJsonNoPath} - {display}");
+                    Console.WriteLine($"Complete ({stopwatch.Elapsed.TotalSeconds.ToString("0.000")} s): {fileNameJsonNoPath} - {display}");
                 }
 ;
             }
