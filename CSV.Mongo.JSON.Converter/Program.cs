@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace CSV.Mongo.JSON.Converter
         static void Main(string[] args)
         {
             string dir = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            string dirCSV = dir + @"\CSV";
-            string dirJSON = dir + @"\JSON";
+            string dirCSV = dir + @"\CSV\";
+            string dirJSON = dir + @"\JSON\";
 
             CreateMatchingDirectories(dirCSV, dirJSON);
 
@@ -29,21 +30,43 @@ namespace CSV.Mongo.JSON.Converter
             {
                 string fileName = file.Substring(0,file.Length - 4);
                 string fileExtension = file.Substring(file.Length - 4);
-                string fileJson = fileName.Replace(dirCSV, dirJSON) + ".json";
+                string fileNameJson = fileName.Replace(dirCSV, dirJSON) + ".json";
+
+                string fileNameCsvNoPath = file.Replace(dirCSV, "");
+                string fileNameJsonNoPath = fileNameJson.Replace(dirJSON, "");
 
                 if (fileExtension.ToLower().Equals(".csv"))
                 {
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+
+                    Console.WriteLine($"Processing: {fileNameCsvNoPath}");
                     file.Substring(file.Length - 4).ToUpper().Equals(".CSV");
                     using (var reader = new StreamReader(file))
                     {
-                        using (var writer = new StreamWriter(fileJson))
+                        using (var writer = new StreamWriter(fileNameJson))
                         {
                             string csv = reader.ReadToEnd();
                             string json = ProcessCsv(csv);
                             writer.WriteLine(json);
                         }
                     }
+
+                    stopwatch.Stop();
+
+                    var fileInfo = new FileInfo(fileNameJson);
+                    var sizeKB = fileInfo.Length / 1024;
+                    bool showMB = sizeKB > 1024;
+                    var sizeMB = sizeKB / 1024;
+
+                    string display = $"{sizeKB} KB";
+                    if (showMB)
+                    {
+                        display = $"{sizeMB} MB";
+                    }
+                    Console.WriteLine($"Complete ({stopwatch.Elapsed.TotalSeconds} s): {fileNameJsonNoPath} - {display}");
                 }
+;
             }
         }
 
