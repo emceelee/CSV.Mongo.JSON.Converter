@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 
 using Newtonsoft.Json.Linq;
 
@@ -16,8 +16,12 @@ namespace CSV.Mongo.JSON.Converter
 {
     class Program
     {
+        private static string[] _stringProperties;
+
         static void Main(string[] args)
         {
+            InitializeSettings();
+
             string dir = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             string dirCSV = dir + @"\CSV\";
             string dirJSON = dir + @"\JSON\";
@@ -66,8 +70,13 @@ namespace CSV.Mongo.JSON.Converter
                     }
                     Console.WriteLine($"Complete ({stopwatch.Elapsed.TotalSeconds.ToString("0.000")} s): {fileNameJsonNoPath} - {display}");
                 }
-;
             }
+        }
+
+        public static void InitializeSettings()
+        {
+            var stringProperties = System.Configuration.ConfigurationManager.AppSettings["stringProperties"];
+            _stringProperties = stringProperties.Split(',').Select(s => s.ToLower()).ToArray();
         }
 
         public static void CreateMatchingDirectories(string directorySource, string directoryTarget)
@@ -250,17 +259,26 @@ namespace CSV.Mongo.JSON.Converter
                 recordValueObject = DateTime.SpecifyKind(recordValueDate, DateTimeKind.Utc);
             }
 
-            double recordValueDouble;
-            if (Double.TryParse(recordValue, out recordValueDouble))
+            int recordValueInt;
+            if (Int32.TryParse(recordValue, out recordValueInt))
             {
-                if (!lastHeaderValue.ToLower().Equals("description") &&
-                    !lastHeaderValue.ToLower().Equals("_id") &&
-                    !lastHeaderValue.ToLower().Equals("code")
-                    )
+                if (!_stringProperties.Contains(lastHeaderValue.ToLower()))
                 {
-                    recordValueObject = recordValueDouble;
+                    recordValueObject = recordValueInt;
                 }
             }
+            else
+            {
+                double recordValueDouble;
+                if (Double.TryParse(recordValue, out recordValueDouble))
+                {
+                    if (!_stringProperties.Contains(lastHeaderValue.ToLower()))
+                    {
+                        recordValueObject = recordValueDouble;
+                    }
+                }
+            }
+
 
             bool recordValueBool;
             if (Boolean.TryParse(recordValue, out recordValueBool))
