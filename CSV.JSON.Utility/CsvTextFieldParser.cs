@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CSV.Mongo.JSON.Converter
+namespace CSV.JSON.Utility
 {
     /// <summary>
     /// Parses comma-delimited text files.

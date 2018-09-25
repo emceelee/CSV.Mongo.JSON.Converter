@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSV.Mongo.JSON.Converter", "CSV.Mongo.JSON.Converter\CSV.Mongo.JSON.Converter.csproj", "{57F26345-3DF6-408D-8B75-718C5F726CE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV.Mongo.JSON.Converter", "CSV.Mongo.JSON.Converter\CSV.Mongo.JSON.Converter.csproj", "{57F26345-3DF6-408D-8B75-718C5F726CE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSV.JSON.Utility", "CSV.JSON.Utility\CSV.JSON.Utility.csproj", "{0CEBB9AA-A15A-43E4-B02B-EDCF84719B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{57F26345-3DF6-408D-8B75-718C5F726CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F26345-3DF6-408D-8B75-718C5F726CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F26345-3DF6-408D-8B75-718C5F726CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CEBB9AA-A15A-43E4-B02B-EDCF84719B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CEBB9AA-A15A-43E4-B02B-EDCF84719B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CEBB9AA-A15A-43E4-B02B-EDCF84719B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CEBB9AA-A15A-43E4-B02B-EDCF84719B69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
