@@ -119,7 +119,7 @@ namespace CSV.Mongo.JSON.Converter
                         }
                         var csvLine = parser.ReadFields();
 
-                        var json = CsvMongoBsonConverter.Convert(header, csvLine, _stringProperties);
+                        var json = CsvMongoJsonConverter.Convert(header, csvLine, _stringProperties);
                         sb.AppendLine(json);
                     }
                 }

@@ -6,7 +6,7 @@ using MongoDB.Bson;
 
 namespace CSV.JSON.Utility
 {
-    public static class CsvMongoBsonConverter
+    public static class CsvMongoJsonConverter
     {
         public static string Convert(string[] header, string[] record, string[] stringProperties = null)
         {
