@@ -1,0 +1,28 @@
+[
+    {
+        "Id": 
+        {
+            "Prop1":"ABC",
+            "Prop2":"123",
+            "Array": 
+                [
+                    { "Value": 1 },
+                    { "Value": 2 },
+                    { "Value": 3 }
+                ]
+        }
+    },
+    {
+        "Id": 
+        {
+            "Prop1":"DEF",
+            "Prop2":"456",
+            "Array": 
+                [
+                    { "Value": 4 },
+                    { "Value": 5 },
+                    { "Value": 6 }
+                ]
+        }
+    },
+];

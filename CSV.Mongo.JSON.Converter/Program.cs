@@ -47,7 +47,7 @@ namespace CSV.Mongo.JSON.Converter
                     stopwatch.Start();
 
                     Console.WriteLine($"Processing: {fileNameCsvNoPath}");
-                    file.Substring(file.Length - 4).ToUpper().Equals(".CSV");
+
                     using (var reader = new StreamReader(file))
                     {
                         using (var writer = new StreamWriter(fileNameJson))
@@ -73,6 +73,9 @@ namespace CSV.Mongo.JSON.Converter
                     Console.WriteLine($"Complete ({stopwatch.Elapsed.TotalSeconds.ToString("0.000")} s): {fileNameJsonNoPath} - {display}");
                 }
             }
+
+            Console.WriteLine("Press [enter] to continue.");
+            Console.ReadLine();
         }
 
         public static void InitializeSettings()

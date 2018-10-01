@@ -4,10 +4,15 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 
+using Newtonsoft.Json.Linq;
+
 namespace CSV.JSON.Utility
 {
     public static class CsvUtility
     {
+        #region CsvReader
+
+        //Create a dynamic object from CSV input
         public static dynamic CreateObject(string[] header, string[] record, string[] stringProperties)
         {
             if(stringProperties == null)
@@ -173,5 +178,91 @@ namespace CSV.JSON.Utility
         {
             return header.Split('/');
         }
+
+        #endregion
+
+        #region CsvWriter
+        
+        //Create a csv from JObject
+        public static void CreateCsvFromJArray(JArray array, ref List<string> header, ref List<List<string>> records)
+        {
+            if (header == null)
+            {
+                header = new List<string>();
+            }
+            if (records == null)
+            {
+                records = new List<List<string>>();
+            }
+
+            foreach(JToken token in array)
+            {
+                List<string> record = null;
+
+                if(token is JObject obj)
+                {
+                    CreateCsvFromJObject(obj, ref header, ref record);
+                }
+
+                records.Add(record);
+            }
+        }
+
+
+        //Create a csv from JObject
+        public static void CreateCsvFromJObject(JObject obj, ref List<string> header, ref List<string> record, string prefix = "")
+        {
+            if(record == null)
+            {
+                record = new List<string>();
+            }
+
+            foreach (JProperty prop in (JToken) obj)
+            {
+                CreateCsvFromJProperty(prop, ref header, ref record, prefix);
+            }
+        }
+
+        //Create a csv from JObject
+        public static void CreateCsvFromJProperty(JProperty prop, ref List<string> header, ref List<string> record, string prefix = "")
+        {
+            string propName = prefix + prop.Name;
+            if(prop.Value is JObject nestedObj)
+            {
+                foreach (JProperty nestedProp in (JToken) nestedObj)
+                {
+                    CreateCsvFromJProperty(nestedProp, ref header, ref record, $"{propName}/");
+                }
+            }
+            else if(prop.Value is JArray array)
+            {
+                int count = 0;
+                foreach (JToken token in array)
+                {
+                    if (token is JObject obj)
+                    {
+                        CreateCsvFromJObject(obj, ref header, ref record, $"{propName}/{count++}/");
+                    }
+                }
+            }
+            else if(prop.Value is JValue value)
+            {
+                if(!header.Contains(propName))
+                {
+                    header.Add(propName);
+                }
+
+                int index = header.IndexOf(propName);
+
+                while (record.Count() <= index)
+                {
+                    record.Add(string.Empty);
+                }
+                record[index] = value.Value.ToString();
+            }
+        }
+
+        #endregion
+
     }
 }
